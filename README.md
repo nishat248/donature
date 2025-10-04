@@ -87,11 +87,16 @@ Admin: Approve, reject, and oversee all activity
 
 GitHub: @nishat248
 
-### 📘 Project: Donature – Django Donation Management System
+ 📘 Project: Donature – Django Donation Management System  
 
-🏫 Department of Computer Science & Engineering
+🏫 Department: Computer Science & Engineering  
 
-🎓 Academic Project – 2025
+🎓 Course: CSE 314 – Software Engineering Lab  
+
+🏛 University: Univarsity Of Asia Pacific  
+
+📅 Academic Year: 2025
+
 
 ### ⚠️ Disclaimer
 This project is developed for academic and learning purposes.
