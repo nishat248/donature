@@ -10,13 +10,16 @@
         <p>You have successfully donated to <strong>{{ donation.campaign.title }}</strong></p>
 
         <div class="donation-summary">
-            <p><strong>Donor:</strong> {% if donation.is_anonymous %}Anonymous{% else %}{{ donation.donor.username }}{% endif %}</p>
-            <p><strong>Amount:</strong> ৳{{ donation.amount }}</p>
-            {% if donation.message %}
-            <p><strong>Message:</strong> "{{ donation.message }}"</p>
-            {% endif %}
-            <p><strong>Date:</strong> {{ donation.donated_at|date:"M d, Y H:i" }}</p>
-        </div>
+    <p><strong>Donor:</strong> {% if donation.is_anonymous %}Anonymous{% else %}{{ donation.donor.username }}{% endif %}</p>
+    <p><strong>Amount:</strong> ৳{{ donation.amount }}</p>
+    <p><strong>Transaction ID:</strong> {{ donation.transaction_id }}</p>
+    <p><strong>Payment Method:</strong> {{ donation.payment_method }}</p>
+    {% if donation.message %}
+    <p><strong>Message:</strong> "{{ donation.message }}"</p>
+    {% endif %}
+    <p><strong>Date:</strong> {{ donation.donated_at|date:"M d, Y H:i" }}</p>
+</div>
+
 
         <div class="success-actions">
             <a href="{% url 'explore_campaigns' %}" class="btn-primary">Back to Campaigns</a>

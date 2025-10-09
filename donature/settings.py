@@ -169,6 +169,18 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
 
 
 
+# ===== SSLCommerz Payment Gateway Settings =====
+if DEBUG:
+    SSL_COMMERZ_STORE_ID = "testbox"
+    SSL_COMMERZ_STORE_PASS = "qwerty"
+    SSL_COMMERZ_IS_SANDBOX = True
+else:
+    SSL_COMMERZ_STORE_ID = "live_store_id"
+    SSL_COMMERZ_STORE_PASS = "live_store_pass"
+    SSL_COMMERZ_IS_SANDBOX = False
+
+
+
 
 
 

@@ -1,5 +1,7 @@
 from django.db import models
 from donations.models import User  # Import User from donations app
+from django.conf import settings
+
 
 # ===== NGO Profile =====
 class NGOProfile(models.Model):
@@ -89,12 +91,45 @@ class CampaignUpdate(models.Model):
 
 # ===== NGO Donation (Donations made to NGO campaigns) =====
 class NGODonation(models.Model):
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name="donations")
-    donor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ngo_donations")
+    campaign = models.ForeignKey(
+        'Campaign',
+        on_delete=models.CASCADE,
+        related_name="donations"
+    )
+    donor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="ngo_donations"
+    )
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     donated_at = models.DateTimeField(auto_now_add=True)
     message = models.TextField(blank=True, null=True)
+    payer_name = models.CharField(max_length=255, blank=True, null=True)
+    account_input = models.CharField(max_length=255, blank=True, null=True)
     is_anonymous = models.BooleanField(default=False)
 
+    # ===== SSLCommerz Integration Fields =====
+    payment_method = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        default="SSLCommerz"
+    )  # e.g., SSLCommerz
+    transaction_id = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        unique=True
+    )  # SSLCommerz transaction ID
+    payment_status = models.CharField(
+        max_length=20,
+        choices=[
+            ('pending', 'Pending'),
+            ('completed', 'Completed'),
+            ('failed', 'Failed')
+        ],
+        default='pending'
+    )
+
     def __str__(self):
-        return f"Donation of {self.amount} to {self.campaign.title}"
+        return f"Donation of {self.amount} to {self.campaign.title} by {self.donor.username}"

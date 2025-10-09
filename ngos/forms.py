@@ -62,7 +62,11 @@ class NGODonationForm(forms.ModelForm):
     )
     payment_method = forms.ChoiceField(
         required=True,
-        choices=[('bkash', 'Bkash'), ('nagad', 'Nagad'), ('card', 'Card')],
+        choices=[
+            ('bkash', 'Bkash'),
+            ('nagad', 'Nagad'),
+            ('card', 'Card')
+        ],
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     account_input = forms.CharField(
@@ -79,12 +83,15 @@ class NGODonationForm(forms.ModelForm):
 
     class Meta:
         model = NGODonation
-        fields = ['amount', 'message', 'payer_name', 'payment_method', 'account_input', 'is_anonymous']
+        fields = [
+            'amount', 'message', 'payer_name',
+            'payment_method', 'account_input', 'is_anonymous'
+        ]
         widgets = {
             'amount': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Enter donation amount',
-                'min': '1'
+                'min': 1
             }),
             'message': forms.Textarea(attrs={
                 'class': 'form-control',
@@ -92,9 +99,16 @@ class NGODonationForm(forms.ModelForm):
                 'placeholder': 'Optional message'
             }),
         }
-    def clean_amount(self):
-            amount = self.cleaned_data.get('amount')
-            if amount <= 0:
-                raise forms.ValidationError("Donation must be greater than 0.")
-            return amount
 
+    def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+        if amount is None or amount <= 0:
+            raise forms.ValidationError("Donation amount must be greater than 0.")
+        return amount
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('is_anonymous'):
+            cleaned_data['payer_name'] = ''
+            cleaned_data['account_input'] = ''
+        return cleaned_data

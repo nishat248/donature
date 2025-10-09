@@ -19,14 +19,18 @@
     </div>
 
     <div class="summary">
-        <p><strong>Receipt ID:</strong> #{{ donation.id }}</p>
-        <p><strong>Donor:</strong> {% if donation.is_anonymous %}Anonymous{% else %}{{ donation.donor.username }}{% endif %}</p>
-        <p><strong>Amount:</strong> ৳{{ donation.amount }}</p>
-        {% if donation.message %}
-        <p><strong>Message:</strong> "{{ donation.message }}"</p>
-        {% endif %}
-        <p><strong>Date:</strong> {{ donation.donated_at|date:"M d, Y H:i" }}</p>
-    </div>
+    <p><strong>Receipt ID:</strong> #{{ donation.id }}</p>
+    <p><strong>Donor:</strong> {% if donation.is_anonymous %}Anonymous{% else %}{{ donation.donor.username }}{% endif %}</p>
+    <p><strong>Amount:</strong> ৳{{ donation.amount }}</p>
+    <p><strong>Payment Method:</strong> {{ donation.payment_method }}</p>
+    <p><strong>Transaction ID:</strong> {{ donation.transaction_id }}</p>
+    {% if donation.message %}
+    <p><strong>Message:</strong> "{{ donation.message }}"</p>
+    {% endif %}
+    <p><strong>Date:</strong> {{ donation.donated_at|date:"M d, Y H:i" }}</p>
+    <p><em>Note: This receipt is generated in SSLCommerz Sandbox (Demo) mode.</em></p>
+</div>
+
 
     <div class="footer">
         <p>This is a system-generated receipt. No actual money transaction occurred.</p>
