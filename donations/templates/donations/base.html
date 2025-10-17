@@ -284,7 +284,7 @@
           <input type="text" name="contact_person" placeholder="Contact Person Name" required>
 
           <small>Please upload your NID or Birth Certificate</small>
-          <input type="file" name="nid_birth_certificate" accept="image/*,.pdf" required>
+          <input type="file" name="ngo_nid_birth_certificate" accept="image/*,.pdf" required>
           
           <input type="text" name="city_postal" placeholder="City/Postal code" required>
           <input type="text" name="address" placeholder="Address" required>
@@ -321,35 +321,51 @@
   <!-- ===== JS ===== -->
 <script>
 function toggleFields() {
-  var type = document.getElementById('user_type').value;
-  var donorFields = document.getElementById('donorFields');
-  var ngoFields = document.getElementById('ngoFields');
+  const type = document.getElementById('user_type').value.toLowerCase(); // normalize case
+  const donorFields = document.getElementById('donorFields');
+  const ngoFields = document.getElementById('ngoFields');
 
   if (type === "ngo") {
-    // NGO show
+    // Show NGO fields
     ngoFields.style.display = "block";
     donorFields.style.display = "none";
 
-    // NGO required ON, Donor required OFF
-    ngoFields.querySelectorAll("input, select, file").forEach(el => el.required = true);
-    donorFields.querySelectorAll("input, select, file").forEach(el => el.required = false);
+    // Enable + require all NGO fields
+    ngoFields.querySelectorAll("input, select").forEach(el => {
+      el.disabled = false;
+      el.required = true;
+    });
+
+    // Disable donor fields
+    donorFields.querySelectorAll("input, select").forEach(el => {
+      el.disabled = true;
+      el.required = false;
+    });
 
   } else if (type === "donor/recipient") {
-    // Donor show
+    // Show Donor fields
     donorFields.style.display = "block";
     ngoFields.style.display = "none";
 
-    // Donor required ON, NGO required OFF
-    donorFields.querySelectorAll("input, select, file").forEach(el => el.required = true);
-    ngoFields.querySelectorAll("input, select, file").forEach(el => el.required = false);
+    // Enable + require donor fields
+    donorFields.querySelectorAll("input, select").forEach(el => {
+      el.disabled = false;
+      el.required = true;
+    });
+
+    // Disable NGO fields
+    ngoFields.querySelectorAll("input, select").forEach(el => {
+      el.disabled = true;
+      el.required = false;
+    });
 
   } else {
-    // Default → both hide
+    // Hide both if nothing selected
     donorFields.style.display = "none";
     ngoFields.style.display = "none";
 
-    donorFields.querySelectorAll("input, select, file").forEach(el => el.required = false);
-    ngoFields.querySelectorAll("input, select, file").forEach(el => el.required = false);
+    donorFields.querySelectorAll("input, select").forEach(el => el.required = false);
+    ngoFields.querySelectorAll("input, select").forEach(el => el.required = false);
   }
 }
 
@@ -361,16 +377,17 @@ function closeModal(id) {
   document.getElementById(id).classList.remove("active");
 }
 
-function switchModal(closeId, openId){
+function switchModal(closeId, openId) {
   closeModal(closeId);
   openModal(openId);
 }
 
-// Page load এ initialize করো
+// Initialize on page load
 document.addEventListener("DOMContentLoaded", function() {
   toggleFields();
 });
 </script>
+
 
 
 

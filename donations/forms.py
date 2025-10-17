@@ -250,10 +250,11 @@ class RequestItemForm(forms.ModelForm):
 
     # Validation for quantity
     def clean_quantity(self):
-        quantity = self.cleaned_data.get('quantity')
-        if quantity < 1:
-            raise ValidationError("Quantity must be at least 1.")
-        return quantity
+     quantity = self.cleaned_data.get('quantity')
+     if quantity is not None and quantity < 1:
+        raise ValidationError("Quantity must be at least 1.")
+     return quantity
+
 
 
 

@@ -112,7 +112,7 @@ def explore_campaigns(request):
     selected_location = request.GET.get('location')
     selected_ngo = request.GET.get('ngo')
 
-    # Only approved, active campaigns that haven't ended yet OR have no end date
+    # Base queryset: only approved, active campaigns that haven't ended yet OR have no end date
     campaigns = Campaign.objects.filter(
         status='approved',
         is_active=True
@@ -133,6 +133,9 @@ def explore_campaigns(request):
     # Annotate donors count
     campaigns = campaigns.annotate(donors_count=Count('donations'))
 
+    # Order by approved_at descending (latest first) → fixes UnorderedObjectListWarning
+    campaigns = campaigns.order_by('-approved_at')
+
     # Calculate progress percent
     for campaign in campaigns:
         campaign.progress_percent = 0
@@ -140,7 +143,6 @@ def explore_campaigns(request):
             campaign.progress_percent = (campaign.collected_amount / campaign.goal_amount) * 100
 
     # Pagination
-    from django.core.paginator import Paginator
     paginator = Paginator(campaigns, 9)
     page_number = request.GET.get('page')
     campaigns_page = paginator.get_page(page_number)
@@ -162,7 +164,6 @@ def explore_campaigns(request):
     }
 
     return render(request, 'ngos/explore_campaigns.html', context)
-
 
 
 def campaign_detail(request, campaign_id):
@@ -400,6 +401,7 @@ def add_campaign_update(request, campaign_id):
                 message=message
             )
             messages.success(request, "Update added successfully!")
+            return redirect(f"{reverse('campaign_detail', args=[campaign_id])}?tab=updates")
         else:
             messages.error(request, "Both title and message are required.")
 

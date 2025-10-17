@@ -10,7 +10,7 @@
     {% if requests_list %}
         <div class="donations-list">
             {% for req in requests_list %}
-            <div class="donation-card {{ req.urgency }}">
+            <div class="donation-card request-item {{ req.urgency }}">
                 <div class="card-image">
                     {% if req.image %}
                         <img src="{{ req.image.url }}" alt="{{ req.title }}">

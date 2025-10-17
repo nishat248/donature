@@ -125,15 +125,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const tabs = document.querySelectorAll('.tab-link');
     const contents = document.querySelectorAll('.tab-content');
 
+    function activateTab(tabId) {
+        tabs.forEach(t => t.classList.remove('current'));
+        contents.forEach(c => c.classList.remove('current'));
+        const activeTab = document.querySelector(`.tab-link[data-tab="${tabId}"]`);
+        const activeContent = document.getElementById(tabId);
+        if (activeTab && activeContent) {
+            activeTab.classList.add('current');
+            activeContent.classList.add('current');
+        }
+    }
+
     tabs.forEach(tab => {
         tab.addEventListener('click', function() {
             const tab_id = tab.getAttribute('data-tab');
-            tabs.forEach(t => t.classList.remove('current'));
-            contents.forEach(c => c.classList.remove('current'));
-            tab.classList.add('current');
-            document.getElementById(tab_id).classList.add('current');
+            activateTab(tab_id);
         });
     });
+
+    // Auto-open tab from URL (like ?tab=updates)
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam) {
+        activateTab(`tab-${tabParam}`);
+    }
 
     // Animate Progress Bar
     const progress = document.getElementById('progress');
@@ -151,5 +166,6 @@ function openShareModal() {
     // TODO: implement real social share links
 }
 </script>
+
 
 {% endblock %}
