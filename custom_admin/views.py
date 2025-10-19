@@ -524,8 +524,8 @@ def delete_campaign_category(request, pk):
 @login_required
 @admin_only
 def contact_messages(request):
-    messages = ContactMessage.objects.all().order_by('-created_at')
-    return render(request, 'custom_admin/contact_messages.html', {'messages': messages})
+    contact_msgs = ContactMessage.objects.all().order_by('-created_at')
+    return render(request, 'custom_admin/contact_messages.html', {'contact_messages': contact_msgs})
 
 
 @login_required

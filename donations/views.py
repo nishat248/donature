@@ -385,12 +385,11 @@ def claim_donation(request, item_id):
                 donation_item.status = 'reserved'
                 donation_item.save()
 
-                # Notify donor if enabled
-                if donation_item.notify_immediately:
-                    Notification.objects.create(
-                        user=donation_item.donor,
-                        message=f"Your donation '{donation_item.title}' has been claimed by {request.user.username}",
-                        link=f"/donation/{donation_item.id}/"
+                
+                Notification.objects.create(
+                    user=donation_item.donor,
+                    message=f"Your donation '{donation_item.title}' has been claimed by {request.user.username}",
+                    link=f"/donation/{donation_item.id}/"
                     )
 
                 messages.success(request, "Your claim has been submitted successfully!")
@@ -543,7 +542,7 @@ def donate_item_to_request(request, request_id):
             Notification.objects.create(
                 user=request_item.requester,
                 message=f"{request.user.username} has donated '{donation.title}' for your request '{request_item.title}'.",
-                link=reverse('request_detail', args=[request_item.id])  # ✅ ঠিক আছে
+                link=reverse('request_detail', args=[request_item.id]) 
             )
 
             messages.success(request, f"Successfully donated '{donation.title}' to {request_item.title}!")

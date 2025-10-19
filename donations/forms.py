@@ -166,9 +166,8 @@ class DonationReviewForm(forms.ModelForm):
         (5, "5"),
     ]
 
-    rating = forms.ChoiceField(
-        choices=RATING_CHOICES,
-        widget=forms.RadioSelect(attrs={'class': 'rating-stars'})
+    rating = forms.IntegerField(
+    widget=forms.HiddenInput()
     )
 
     class Meta:
